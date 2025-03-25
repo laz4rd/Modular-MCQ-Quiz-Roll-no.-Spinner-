@@ -1,0 +1,334 @@
+<!-- © 2025 Brijraj Singh Bhati. Licensed under CC BY-NC 4.0. Not for Personal Benifit. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Picker</title>
+    <style>
+        /* Updated Styling with Red, White, and Black Theme */
+/* Minimalist Modern Styling */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+}
+
+.question-box {
+    font-size: 18px;
+    margin: 20px 0;
+    padding: 15px;
+    background: #f9f9f9;
+    border-left: 5px solid #007BFF;
+    border-radius: 5px;
+    min-height: 50px;
+}
+
+.options {
+    list-style: none;
+    padding: 0;
+}
+
+.options li {
+    margin: 10px 0;
+    padding: 10px;
+    background: #f1f1f1;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.options li:hover {
+    background: #007BFF;
+    color: white;
+}
+
+.correct {
+    background: #28a745 !important;
+    color: white;
+}
+
+.wrong {
+    background: #dc3545 !important;
+    color: white;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>IEEE MCQs</h1>
+        <div class="question-box" id="question-display">
+            Click the button to get a question!
+        </div>
+        <ul class="options" id="options-list"></ul>
+        <button onclick="pickRandomQuestion()">Get Question</button>
+    </div>
+
+    <script>
+        let questions = [
+    // R-L Circuit Questions
+    {
+        question: "In an R-L circuit, the current ___ the voltage.",
+        options: ["Lags", "Leads", "Remains in phase", "Becomes zero"],
+        answer: "Lags"
+    },
+    {
+        question: "The impedance Z of a series R-L circuit is given by:",
+        options: ["Z = R + jX_L", "Z = R - jX_L", "Z = √(R² + X_L²)", "Z = R × X_L"],
+        answer: "Z = √(R² + X_L²)"
+    },
+    {
+        question: "In an R-L circuit, the inductive reactance X_L is given by:",
+        options: ["X_L = 1/ωL", "X_L = ωL", "X_L = R + L", "X_L = R/L"],
+        answer: "X_L = ωL"
+    },
+    // R-C Circuit Questions
+    {
+        question: "In an R-C circuit, the current ___ the voltage.",
+        options: ["Lags", "Leads", "Remains in phase", "Becomes zero"],
+        answer: "Leads"
+    },
+    {
+        question: "The impedance Z of a series R-C circuit is given by:",
+        options: ["Z = R + jX_C", "Z = R - jX_C", "Z = √(R² + X_C²)", "Z = R × X_C"],
+        answer: "Z = √(R² + X_C²)"
+    },
+    {
+        question: "In an R-C circuit, the capacitive reactance X_C is given by:",
+        options: ["X_C = 1/ωC", "X_C = ωC", "X_C = R + C", "X_C = R/C"],
+        answer: "X_C = 1/ωC"
+    },
+    // R-L-C Circuit Questions
+    {
+        question: "For resonance in a series R-L-C circuit, the condition is:",
+        options: ["X_L = X_C", "X_L > X_C", "X_L < X_C", "R = X_L"],
+        answer: "X_L = X_C"
+    },
+    {
+        question: "The total impedance Z of an R-L-C circuit is:",
+        options: ["Z = R + j(X_L - X_C)", "Z = R - j(X_L + X_C)", "Z = √(R² + (X_L - X_C)²)", "Z = R × (X_L + X_C)"],
+        answer: "Z = √(R² + (X_L - X_C)²)"
+    },
+    // Capacitor Circuit Questions
+    {
+        question: "In a purely capacitive circuit, the current leads the voltage by:",
+        options: ["0°", "90°", "180°", "45°"],
+        answer: "90°"
+    },
+    {
+        question: "The capacitive reactance X_C is given by:",
+        options: ["X_C = 1/ωC", "X_C = ωC", "X_C = R + C", "X_C = R/C"],
+        answer: "X_C = 1/ωC"
+    },
+    // Power Supply Questions
+    {
+        question: "In a single-phase power supply, what is the frequency of the AC voltage in India?",
+        options: ["25 Hz", "50 Hz", "60 Hz", "100 Hz"],
+        answer: "50 Hz"
+    },
+    {
+        question: "What is the main function of the neutral wire in a single-phase power supply?",
+        options: ["Carries the electric current from source to load", "Provides a return path for current", "Increases voltage stability", "Reduces power loss"],
+        answer: "Provides a return path for current"
+    },
+    {
+        question: "Which of the following is a common application of single-phase power supply?",
+        options: ["Industrial motors", "Large commercial buildings", "Residential appliances (fans, coolers, lamps, etc.)", "High-voltage transmission"],
+        answer: "Residential appliances (fans, coolers, lamps, etc.)"
+    },
+    {
+        question: "In a three-phase power supply, how are the three waveforms related to each other?",
+        options: ["They are in sync with each other", "They are 60° out of phase", "They are 90° out of phase", "They are 120° out of phase"],
+        answer: "They are 120° out of phase"
+    },
+    {
+        question: "What is an advantage of a three-phase power supply over a single-phase power supply?",
+        options: ["Requires fewer conductors", "Produces non-sinusoidal waves", "Provides continuous power with no pulsations", "Is cheaper for household use"],
+        answer: "Provides continuous power with no pulsations"
+    },
+    {
+        question: "Which type of power supply is used in most industrial and commercial applications?",
+        options: ["Single-phase power supply", "Three-phase power supply", "Direct current (DC) power supply", "Battery power supply"],
+        answer: "Three-phase power supply"
+    },
+    {
+        question: "What happens if one phase of a three-phase power supply fails?",
+        options: ["The system continues operating normally", "The remaining phases supply reduced power", "The system completely shuts down", "The voltage doubles in the remaining phases"],
+        answer: "The remaining phases supply reduced power"
+    },
+    {
+        question: "Which power supply type requires a phase and neutral conductor for operation?",
+        options: ["Three-phase power supply", "Single-phase power supply", "Direct current (DC) power supply", "None of the above"],
+        answer: "Single-phase power supply"
+    },
+    {
+        question: "What determines the presence of a neutral wire in a three-phase power system?",
+        options: ["The frequency of the power supply", "The type of connection (star or delta)", "The voltage level", "The type of load"],
+        answer: "The type of connection (star or delta)"
+    },
+    {
+        question: "What type of connection does not have a neutral wire in a three-phase power system?",
+        options: ["Star connection", "Delta connection", "Hybrid connection", "Open loop connection"],
+        answer: "Delta connection"
+    },
+
+{
+question: "What is the main characteristic of a single-phase power supply?",
+options: ["Uses three conductors", "Uses only two conductors: phase and neutral", "Has three waveforms that are 120° out of phase", "Cannot be used for residential power supply"],
+answer: "Uses only two conductors: phase and neutral"
+},
+{
+question: "In a single-phase power supply, at what degree does the voltage attain its peak value during the positive half-cycle?",
+options: ["0°", "90°", "180°", "270°"],
+answer: "90°"
+},
+{
+question: "What is the RMS value of voltage in a single-phase power supply in India?",
+options: ["110V", "230V", "400V", "50V"],
+answer: "230V"
+},
+{
+question: "What is the main drawback of a single-phase power supply?",
+options: ["Requires a transformer", "Produces a non-sinusoidal waveform", "Generates pulsating power causing vibrations in motors", "Cannot be used for lighting applications"],
+answer: "Generates pulsating power causing vibrations in motors"
+},
+{
+question: "How many line conductors are present in a three-phase power supply?",
+options: ["One", "Two", "Three", "Four"],
+answer: "Three"
+},
+{
+question: "Which type of connection in a three-phase system includes a neutral wire?",
+options: ["Star connection", "Delta connection", "Mesh connection", "Parallel connection"],
+answer: "Star connection"
+},
+{
+question: "What is the phase difference between the waveforms in a three-phase power supply?",
+options: ["60°", "90°", "120°", "180°"],
+answer: "120°"
+},
+{
+question: "Why is a three-phase power supply preferred for industrial applications?",
+options: ["It is cheaper than single-phase", "The average power never drops to zero, preventing pulsations", "It does not require a neutral wire", "It operates at a higher frequency"],
+answer: "The average power never drops to zero, preventing pulsations"
+},
+{
+question: "In a purely resistive AC circuit, the phase difference between voltage and current is:",
+options: ["0°", "90°", "180°", "45°"],
+answer: "0°"
+},
+{
+question: "Which of the following equations best represents the voltage in a three-phase power supply?",
+options: ["V = Vm sin(ωt)", "V = Vm sin(ωt + 120°)", "V = Vm sin(ωt - 120°)", "All of the above"],
+answer: "All of the above"
+},
+{
+question: "In a series AC circuit with power factor 0.5 leading, what does the leading power factor indicate?",
+options: ["Circuit is purely resistive", "Circuit has inductive reactance", "Circuit has capacitive reactance", "Circuit has equal inductance and capacitance"],
+answer: "Circuit has capacitive reactance"
+},
+{
+question: "A load of 25 kW operates at 0.7 lagging power factor. What does the term 'lagging power factor' indicate?",
+options: ["Current leads voltage", "Current and voltage are in phase", "Current lags voltage", "None of the above"],
+answer: "Current lags voltage"
+},
+{
+question: "In an RL series AC circuit, the voltage across the inductor leads the current by:",
+options: ["0°", "90°", "180°", "270°"],
+answer: "90°"
+},
+{
+question: "Which of the following is NOT an advantage of a three-phase power supply over a single-phase power supply?",
+options: ["Higher efficiency", "Reduced power loss", "Requires fewer conductors", "Provides constant power"],
+answer: "Requires fewer conductors"
+},
+{
+question: "What type of transformer increases voltage from primary to secondary winding?",
+options: ["Step-down transformer", "Auto transformer", "Step-up transformer", "Isolation transformer"],
+answer: "Step-up transformer"
+},
+{
+question: "The turn ratio of a transformer is defined as:",
+options: ["Ratio of secondary voltage to primary voltage", "Ratio of primary turns to secondary turns", "Ratio of primary resistance to secondary resistance", "Ratio of core losses to copper losses"],
+answer: "Ratio of secondary voltage to primary voltage"
+},
+{
+question: "If a capacitor of 55 µF is connected to a 50 Hz supply, what happens if a variable resistor is added in series?",
+options: ["The phase angle between voltage and current increases", "The impedance decreases", "The voltage across the capacitor increases", "The circuit becomes purely resistive"],
+answer: "The phase angle between voltage and current increases"
+}
+
+];
+
+
+
+
+
+        let remainingQuestions = [...questions]; // Copy of questions to track unasked ones
+
+        function pickRandomQuestion() {
+            if (remainingQuestions.length === 0) {
+                // Reset questions when all are used
+                remainingQuestions = [...questions];
+                alert("All questions have been asked! Resetting...");
+            }
+
+            // Pick a random question
+            const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
+            const selectedQuestion = remainingQuestions.splice(randomIndex, 1)[0]; // Remove picked question
+
+            document.getElementById("question-display").innerText = selectedQuestion.question;
+            
+            const optionsList = document.getElementById("options-list");
+            optionsList.innerHTML = ""; // Clear previous options
+
+            selectedQuestion.options.forEach(option => {
+                const li = document.createElement("li");
+                li.innerText = option;
+                li.onclick = () => checkAnswer(li, option, selectedQuestion.answer);
+                optionsList.appendChild(li);
+            });
+        }
+
+        function checkAnswer(element, selectedOption, correctAnswer) {
+            if (selectedOption === correctAnswer) {
+                element.classList.add("correct");
+            } else {
+                element.classList.add("wrong");
+            }
+        }
+    </script>
+
+</body>
+</html>
